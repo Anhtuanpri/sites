@@ -1,525 +1,605 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giới Thiệu Tuấn - Học Sinh, Dev & Trader</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liquid Glass</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap">
+  <style>
+    :root {
+      --c-glass: #bbbbbc;
+      --c-light: #fff;
+      --c-dark: #000;
+      --c-content: #224;
+      --c-action: #0052f5;
+      --c-bg: #E8E8E9;
+      --glass-reflex-dark: 1;
+      --glass-reflex-light: 1;
+      --saturation: 150%;
+      --fz: 20px;
+    }
+
+    body:has(input[value="dark"]:checked) {
+      --c-glass: #bbbbbc;
+      --c-light: #fff;
+      --c-dark: #000;
+      --c-content: #e1e1e1;
+      --c-action: #03d5ff;
+      --c-bg: #1b1b1d;
+      --glass-reflex-dark: 2;
+      --glass-reflex-light: 0.3;
+      --saturation: 150%;
+    }
+
+    body:has(input[value="dim"]:checked) {
+      --c-light: #99deff;
+      --c-dark: #20001b;
+      --c-glass: hsl(335, 250%, 74% / 1);
+      --c-content: #d5dbe2;
+      --c-action: #ff48a9;
+      --c-bg: #152433;
+      --glass-reflex-dark: 2;
+      --glass-reflex-light: 0.7;
+      --saturation: 200%;
+    }
+
+    body {
+      font-size: var(--fz);
+      font-family: "DM Sans", sans-serif;
+      font-optical-sizing: auto;
+      background: var(--c-bg);
+      color: var(--c-content);
+      margin: 0;
+      padding: 0;
+      transition: background 400ms cubic-bezier(1, 0.0, 0.4, 1), color 400ms cubic-bezier(1, 0.0, 0.4, 1);
+    }
+
+    .toolbar {
+      position: fixed;
+      z-index: 1;
+      top: 40px;
+      left: 50%;
+      translate: -50%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 244px;
+      max-width: 244px;
+      height: 70px;
+      box-sizing: border-box;
+      padding: 8px 12px 10px;
+      border: none;
+      border-radius: 99em;
+      font-size: var(--fz);
+      background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+      backdrop-filter: blur(8px) url(#switcher) saturate(var(--saturation));
+      -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+        inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+        inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+        inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+      transition:
+        background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1);
+    }
+
+    .switcher__legend {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      white-space: nowrap;
+      clip-path: inset(100%);
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+    }
+
+    .switcher__input {
+      clip: rect(0 0 0 0);
+      clip-path: inset(100%);
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+    }
+
+    .switcher__icon {
+      display: block;
+      width: 100%;
+      max-width: 24px;
+      transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
+      fill: var(--c);
+      filter: url(#switcher);
+    }
+
+    .switcher__input:checked + .switcher__icon {
+      filter: url(#toggler);
+    }
+
+    .switcher__filter {
+      position: absolute;
+      width: 0;
+      height: 0;
+      z-index: -1;
+    }
+
+    .switcher__option {
+      --c: var(--c-content);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 16px;
+      width: 68px;
+      height: 100%;
+      box-sizing: border-box;
+      border-radius: 99em;
+      opacity: 1;
+      transition: all 160ms;
+    }
+
+    .switcher__option:hover {
+      --c: var(--c-action);
+      cursor: pointer;
+    }
+
+    .switcher__option:hover .switcher__icon {
+      scale: 1.2;
+    }
+
+    .switcher__option:has(input:checked) {
+      --c: var(--c-content);
+      cursor: auto;
+    }
+
+    .switcher__option:has(input:checked) .switcher__icon {
+      scale: 1;
+    }
+
+    .switcher::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      display: block;
+      width: 84px;
+      height: calc(100% - 10px);
+      border-radius: 99em;
+      background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+      z-index: -1;
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+        inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+        inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+        inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+    }
+
+    .switcher:has(input[c-option="1"]:checked)::after {
+      translate: 0 0;
+      transform-origin: right;
+      transition:
+        background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+      animation: scaleToggle 440ms ease;
+    }
+
+    .switcher:has(input[c-option="2"]:checked)::after {
+      translate: 76px 0;
+      transition:
+        background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+      animation: scaleToggle2 440ms ease;
+    }
+
+    .switcher[c-previous="1"]:has(input[c-option="2"]:checked)::after {
+      transform-origin: left;
+    }
+
+    .switcher[c-previous="3"]:has(input[c-option="2"]:checked)::after {
+      transform-origin: right;
+    }
+
+    .switcher:has(input[c-option="3"]:checked)::after {
+      translate: 152px 0;
+      transform-origin: left;
+      transition:
+        background-color 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1),
+        translate 400ms cubic-bezier(1, 0.0, 0.4, 1);
+      animation: scaleToggle3 440ms ease;
+    }
+
+    @keyframes scaleToggle {
+      0% { scale: 1 1; }
+      50% { scale: 1.1 1; }
+      100% { scale: 1 1; }
+    }
+
+    @keyframes scaleToggle2 {
+      0% { scale: 1 1; }
+      50% { scale: 1.2 1; }
+      100% { scale: 1 1; }
+    }
+
+    @keyframes scaleToggle3 {
+      0% { scale: 1 1; }
+      50% { scale: 1.1 1; }
+      100% { scale: 1 1; }
+    }
+
+    .volume-control {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      border-radius: 99em;
+      background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+      backdrop-filter: blur(8px) saturate(var(--saturation));
+      -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+        0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+      transition: all 400ms cubic-bezier(1, 0.0, 0.4, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .volume-control:hover {
+      background-color: color-mix(in srgb, var(--c-glass) 20%, transparent);
+    }
+
+    .volume-control__icon {
+      width: 24px;
+      height: 24px;
+      fill: var(--c-content);
+      transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
+    }
+
+    .volume-control:hover .volume-control__icon {
+      scale: 1.2;
+    }
+
+    .volume-control__slider {
+      position: absolute;
+      left: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 50px;
+      background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+      backdrop-filter: blur(8px) saturate(var(--saturation));
+      -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+      transition: width 400ms cubic-bezier(1, 0.0, 0.4, 1), padding 400ms cubic-bezier(1, 0.0, 0.4, 1);
+      overflow: hidden;
+    }
+
+    .volume-control--open .volume-control__slider {
+      width: 150px;
+      padding: 0 15px;
+    }
+
+    .volume-control__input {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 6px;
+      background: color-mix(in srgb, var(--c-content) 50%, transparent);
+      border-radius: 3px;
+      outline: none;
+      transition: background 160ms;
+    }
+
+    .volume-control__input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--c-action);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px color-mix(in srgb, var(--c-dark) 20%, transparent);
+    }
+
+    .volume-control__input::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: var(--c-action);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px color-mix(in srgb, var(--c-dark) 20%, transparent);
+      border: none;
+    }
+
+    .article {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5em 2em;
+    }
+
+    h1, h2, p, blockquote {
+      width: 100%;
+      max-width: 600px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin: 1.4em 0 0.6em;
+    }
+
+    h2 {
+      font-size: 2em;
+      margin: 1.4em 0 0.6em;
+    }
+
+    p {
+      line-height: 160%;
+      margin: 0 0 1em;
+    }
+
+    blockquote {
+      margin-left: 0;
+      margin-right: 0;
+      font-size: 2em;
+      padding-left: 1em;
+      border-left: 0.1em solid currentColor;
+    }
+
+    figure {
+      margin: 1em 0 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    figcaption {
+      max-width: 600px;
+      margin-top: 1em;
+      font-size: 0.8em;
+      color: color-mix(in srgb, var(--c-content) 60%, var(--c-bg));
+    }
+
+    a {
+      color: var(--c-action);
+      text-decoration-thickness: 0.05em;
+      text-underline-position: under;
+      text-decoration-color: color-mix(in srgb, currentColor, transparent 70%);
+      transition: color 160ms, text-decoration-color 160ms;
+    }
+
+    a:hover {
+      color: color-mix(in srgb, var(--c-action), var(--c-content) 40%);
+      text-decoration-color: color-mix(in srgb, currentColor, transparent 30%);
+    }
+
+    img {
+      display: block;
+      border-radius: 0.8em;
+      width: 100%;
+      max-width: 700px;
+      aspect-ratio: 5 / 3;
+      object-fit: cover;
+    }
+
+    .box {
+      padding: 1em 1.4em;
+      border-top: 4px solid color-mix(in srgb, var(--c-action) 50%, transparent);
+      border-radius: 0.8em;
+      background-color: color-mix(in srgb, var(--c-action) 8%, var(--c-bg));
+      transition: background 400ms cubic-bezier(1, 0.0, 0.4, 1);
+    }
+  </style>
 </head>
 <body>
-    <!-- Thanh Điều Hướng -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-person-circle"></i> Tuấn<span class="text-accent">Dev</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Trang Chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">Về Tôi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#skills">Kỹ Năng</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#trading">Giao Dịch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Liên Hệ</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <div class="toolbar">
+    <fieldset class="switcher">
+      <legend class="switcher__legend">Choose theme</legend>
+      <label class="switcher__option">
+        <input class="switcher__input" type="radio" name="theme" value="light" c-option="1" checked />
+        <svg class="switcher__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36">
+          <path fill="var(--c)" fill-rule="evenodd" d="M18 12a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" clip-rule="evenodd"/>
+          <path fill="var(--c)" d="M17 6.038a1 1 0 1 1 2 0v3a1 1 0 0 1-2 0v-3ZM24.244 7.742a1 1 0 1 1 1.618 1.176L24.1 11.345a1 1 0 1 1-1.618-1.176l1.763-2.427ZM29.104 13.379a1 1 0 0 1 .618 1.902l-2.854.927a1 1 0 1 1-.618-1.902l2.854-.927ZM29.722 20.795a1 1 0 0 1-.619 1.902l-2.853-.927a1 1 0 1 1 .618-1.902l2.854.927ZM25.862 27.159a1 1 0 0 1-1.618 1.175l-1.763-2.427a1 1 0 1 1 1.618-1.175l1.763 2.427ZM19 30.038a1 1 0 0 1-2 0v-3a1 1 0 0 1 2 0v3ZM11.755 28.334a1 1 0 0 1-1.618-1.175l1.764-2.427a1 1 0 0 1 1.618 1.175l-1.764 2.427ZM6.896 22.697a1 1 0 0 1-.618-1.902l2.853-.927a1 1 0 0 1 .618 1.902l-2.853.927ZM6.278 15.28a1 1 0 0 1 .618-1.901l2.853.927a1 1 0 0 1-.618 1.902l-2.853-.927ZM10.137 8.918a1 1 0 0 1 1.618-1.176l1.764 2.427a1 1 0 0 1-1.618 1.176l-1.764-2.427Z"/>
+        </svg>
+      </label>
+      <label class="switcher__option">
+        <input class="switcher__input" type="radio" name="theme" value="dark" c-option="2" />
+        <svg class="switcher__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36">
+          <path fill="var(--c)" d="M12.5 8.473a10.968 10.968 0 0 1 8.785-.97 7.435 7.435 0 0 0-3.737 4.672l-.09.373A7.454 7.454 0 0 0 28.732 20.4a10.97 10.97 0 0 1-5.232 7.125l-.497.27c-5.014 2.566-11.175.916-14.234-3.813l-.295-.483C5.53 18.403 7.13 11.93 12.017 8.77l.483-.297Zm4.234.616a8.946 8.946 0 0 0-2.805.883l-.429.234A9 9 0 0 0 10.206 22.5l.241.395A9 9 0 0 0 22.5 25.794l.416-.255a8.94 8.94 0 0 0 2.167-1.99 9.433 9.433 0 0 1-2.782-.313c-5.043-1.352-8.036-6.535-6.686-11.578l.147-.491c.242-.745.573-1.44.972-2.078Z"/>
+        </svg>
+      </label>
+      <label class="switcher__option">
+        <input class="switcher__input" type="radio" name="theme" value="dim" c-option="3" />
+        <svg class="switcher__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36">
+          <path fill="var(--c)" d="M5 21a1 1 0 0 1 1-1h24a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1ZM12 25a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H13a1 1 0 0 1-1-1ZM15 29a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1ZM18 13a6 6 0 0 1 5.915 7h-2.041A4.005 4.005 0 0 0 18 15a4 4 0 0 0-3.874 5h-2.041A6 6 0 0 1 18 13ZM17 7.038a1 1 0 1 1 2 0v3a1 1 0 0 1-2 0v-3ZM24.244 8.742a1 1 0 1 1 1.618 1.176L24.1 12.345a1 1 0 1 1-1.618-1.176l1.763-2.427ZM29.104 14.379a1 1 0 0 1 .618 1.902l-2.854.927a1 1 0 1 1-.618-1.902l2.854-.927ZM6.278 16.28a1 1 0 0 1 .618-1.901l2.853.927a1 1 0 0 1-.618 1.902l-2.853-.927ZM10.137 9.918a1 1 0 0 1 1.618-1.176l1.764 2.427a1 1 0 0 1-1.618 1.176l-1.764-2.427Z"/>
+        </svg>
+      </label>
+      <div class="switcher__filter">
+        <svg>
+          <filter id="switcher" primitiveUnits="objectBoundingBox">
+            <feImage result="map" width="100%" height="100%" x="0" y="0" href="data:image/webp;base64,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" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.04" result="blur"/>
+            <feDisplacementMap
+              id="disp"
+              in="blur"
+              in2="map"
+              scale="0.5"
+              xChannelSelector="R"
+              yChannelSelector="G">
+            </feDisplacementMap>
+          </filter>
+          <filter id="toggler" primitiveUnits="objectBoundingBox">
+            <feImage result="map" width="100%" height="100%" x="0" y="0" href="data:image/webp;base64,UklGRq4vAABXRUJQVlA4WAoAAAAQAAAA5wEAhwAAQUxQSOYWAAABHAVpGzCrf9t7EiJCYdIGTDpvURGm9n7K+YS32rZ1W8q0LSSEBCQgAQlIwEGGA3CQOAAHSEDCJSEk4KDvUmL31vrYkSX3ufgXEb4gSbKt2LatxlqIgNBBzbM3ikHVkvUvq7btKpaOBCQgIRIiAQeNg46DwgE4oB1QDuKgS0IcXBykXieHkwdjX/4iAhZtK3ErSBYGEelp+4aM/5/+z14+//jLlz/++s/Xr4//kl9C8Ns8DaajU+lPX/74+viv/eWxOXsO+eHL3/88/ut/2b0zref99evjX8NLmNt1fP7178e/jJcw9k3G//XP49/Iy2qaa7328Xkk9ZnWx0VUj3bcyCY4Pi7C6reeEagEohnRCbQQwFmUp9ggYQj8MChjTSI0Ck7G/bh6P" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.01" result="blur"/>
+            <feDisplacementMap
+              id="disp"
+              in="blur"
+              in2="map"
+              scale="0.5"
+              xChannelSelector="R"
+              yChannelSelector="G">
+            </feDisplacementMap>
+          </filter>
+        </svg>
+      </div>
+    </fieldset>
 
-    <!-- Phần Giới Thiệu -->
-    <header class="hero">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-                    <h1 class="display-4 fw-bold animate__animated animate__fadeInUp">Xin Chào, Tôi Là Tuấn</h1>
-                    <p class="lead my-4 animate__animated animate__fadeInUp animate__delay-1s">Tôi là một học sinh 19 tuổi, đam mê lập trình và giao dịch tài chính. Khám phá hành trình của tôi trong thế giới công nghệ và đầu tư!</p>
-                    <div class="animate__animated animate__fadeInUp animate__delay-2s">
-                        <a href="#skills" class="btn btn-primary btn-lg me-2">Xem Kỹ Năng</a>
-                        <a href="#about" class="btn btn-outline-light btn-lg">Tìm Hiểu Thêm</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 animate__animated animate__fadeIn animate__delay-1s">
-                    <img src="./tuan-profile.jpg" alt="Tuấn trong một buổi làm việc" class="img-fluid rounded-4 hero-image">
-                </div>
-            </div>
-        </div>
-        <div class="hero-shape"></div>
-    </header>
+    <div class="volume-control">
+      <svg class="volume-control__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path fill="var(--c-content)" d="M11.26 3.69A1.45 1.45 0 0 0 9 4.79v14.42a1.45 1.45 0 0 0 2.26 1.2l10.22-7.21a1.45 1.45 0 0 0 0-2.4L11.26 3.69z"/>
+        <path fill="var(--c-content)" d="M15.53 8.53a.75.75 0 0 0-1.06 1.06 4.5 4.5 0 0 1 0 6.36 1 1 0 0 0 0 1.41.75.75 0 0 0 1.06 0 6 6 0 0 0 0-8.83z"/>
+        <path fill="var(--c-content)" d="M17.57 6.48a.75.75 0 1 0-1.06 1.06 7.5 7.5 0 0 1 0 10.61 1 1 0 0 0 0 1.42.75.75 0 0 0 1.06 0 9 9 0 0 0 0-12.73z"/>
+      </svg>
+      <div class="volume-control__slider">
+        <input type="range" class="volume-control__input" min="0" max="100" value="50">
+      </div>
+    </div>
+  </div>
 
-    <!-- Phần Thống Kê -->
-    <section class="stats py-4">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <div class="stat-item">
-                        <h3 class="stat-number">900<span class="counter">2</span>+</h3>
-                        <p class="stat-text">số giờ lập trình</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <div class="stat-item">
-                        <h3 class="stat-number">30<span class="counter">50</span>+</h3>
-                        <p class="stat-text">Giao Dịch Thành Công</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-item">
-                        <h3 class="stat-number">30<span class="counter">5</span>+</h3>
-                        <p class="stat-text">Dự Án Hoàn Thành</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <audio id="background-audio" src="background-music.mp3" loop autoplay></audio>
 
-    <!-- Phần Về Tôi -->
-    <section id="about" class="py-5">
-        <div class="container">
-            <div class="section-header text-center mb-5">
-                <span class="section-subtitle">Hành Trình Cá Nhân</span>
-                <h2 class="section-title">Về Tôi - Tuấn</h2>
-                <p class="section-description">Một học sinh 19 tuổi với đam mê mãnh liệt trong lập trình và giao dịch tài chính</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="process-card">
-                        <div class="process-icon">
-                            <span class="process-number">1</span>
-                            <i class="bi bi-book"></i>
-                        </div>
-                        <h3>Học Sinh</h3>
-                        <p>Tôi hiện là học sinh, luôn nỗ lực học tập và khám phá những lĩnh vực mới để phát triển bản thân.</p>
-                        <ul class="process-features">
-                            <li><i class="bi bi-check-circle-fill"></i> Tự học và nghiên cứu</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Quản lý thời gian hiệu quả</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Đam mê học hỏi</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="process-card active">
-                        <div class="process-icon">
-                            <span class="process-number">2</span>
-                            <i class="bi bi-code-slash"></i>
-                        </div>
-                        <h3>Lập Trình Viên</h3>
-                        <p>Tôi phát triển các ứng dụng web và phần mềm, tập trung vào giao diện người dùng và trải nghiệm mượt mà.</p>
-                        <ul class="process-features">
-                            <li><i class="bi bi-check-circle-fill"></i> Thành thạo HTML, CSS, JS</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Sử dụng Firebase, Node.js</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Xây dựng giao diện hiện đại</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="process-card">
-                        <div class="process-icon">
-                            <span class="process-number">3</span>
-                            <i class="bi bi-graph-up"></i>
-                        </div>
-                        <h3>Nhà Giao Dịch</h3>
-                        <p>Tôi tham gia giao dịch cổ phiếu và tiền điện tử, áp dụng phân tích kỹ thuật để tối ưu hóa lợi nhuận.</p>
-                        <ul class="process-features">
-                            <li><i class="bi bi-check-circle-fill"></i> Phân tích biểu đồ giá</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Quản lý rủi ro</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Theo dõi thị trường</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <article class="article">
+    <h1>Embracing a Balanced Lifestyle</h1>
+    <p>
+      Living a balanced lifestyle is about finding harmony between work, wellness, and personal passions. Recent trends show a growing interest in mindfulness practices, with many adopting meditation and yoga to reduce stress. Experts suggest starting with just 10 minutes a day to see benefits. <a href="https://www.mindful.org/how-to-meditate/">Learn more about meditation</a>. Fashion also plays a role, with sustainable brands gaining traction for their eco-friendly designs. People are choosing quality over quantity, investing in versatile pieces that last.
+    </p>
+    <figure>
+      <img src="https://i.ibb.co/KcBTf2Dn/BALANCE.jpg" alt="áº¢nh ÄÆ°á»£c tÃ¬m kiáº¿m trÃªn Google">
+      <figcaption>áº¢nh ÄÆ°á»£c tÃ¬m kiáº¿m trÃªn Google <a href="https://i.ibb.co/KcBTf2Dn/BALANCE.jpg">Google</a></figcaption>
+    </figure>
+    <p>
+      Travel is another key aspect of a vibrant lifestyle. Whether itâs a weekend getaway or a month-long adventure, exploring new places boosts creativity and perspective. Budget-friendly destinations like Vietnam or Portugal are trending for their rich culture and affordability. Planning ahead and prioritizing experiences over material purchases can make travel more fulfilling. Wellness retreats are also on the rise, combining relaxation with personal growth activities like journaling or fitness classes.
+    </p>
+    <blockquote>
+      "Balance is not something you find; itâs something you create." â Jana Kingsford
+    </blockquote>
+    <p>
+      Nutrition plays a critical role in maintaining energy and health. Plant-based diets are gaining popularity, with studies showing they can improve heart health and reduce environmental impact. Simple swaps, like adding more vegetables to meals or trying <a href="https://i.ibb.co/NnxfB15y/5-cach-quang-ba-du-lich.jpg">plant-based recipes</a>, can make a big difference. Staying hydrated and prioritizing whole foods over processed options is a practical step for long-term wellness.
+    </p>
+    <p>
+      Fashion enthusiasts are leaning into minimalism, curating capsule wardrobes that mix and match effortlessly. Neutral tones and timeless designs dominate, with brands like Everlane and Reformation leading the charge. Accessories, like statement scarves or eco-friendly bags, add personality without clutter. The key is to invest in pieces that reflect personal style while being versatile for daily wear.
+    </p>
+    <h2>Mindful Living Tips</h2>
+    <p>
+      Start your day with intention. A morning routine, like stretching or journaling, sets a positive tone. Apps like Headspace or Calm can guide beginners through meditation. For those with busy schedules, micro-habitsâlike deep breathing during a commuteâcan reduce stress. Creating a cozy home environment with plants or soft lighting also enhances well-being.
+    </p>
+    <figure>
+      <img src="https://i.ibb.co/RG21gD3v/image001-6.jpg" alt="áº¢nh Thuá»c Báº£n Quyá»n Google ">
+      <figcaption>áº¢nh Thuá»c Báº£n Quyá»n Google <a href="https://i.ibb.co/RG21gD3v/image001-6.jpg">Google</a></figcaption>
+    </figure>
+    <p>
+      Social connections are vital for a balanced life. Spending quality time with friends or family, even virtually, fosters happiness. Joining local clubs or online communities around hobbies like hiking or cooking can expand your circle. Balance doesnât mean perfectionâitâs about making small, intentional choices daily. Whether itâs a walk in nature or trying a new recipe, these moments add up.
+    </p>
+    <p>
+      Technology can support a balanced lifestyle when used mindfully. Fitness trackers or apps like MyFitnessPal help monitor health goals, while social media can inspire with accounts dedicated to wellness or sustainable fashion. However, setting boundaries, like limiting screen time before bed, ensures tech enhances rather than disrupts your life.
+    </p>
+    <blockquote>
+      "The key to a fulfilling life is to embrace what matters most to you."
+    </blockquote>
+    <p>
+      Travel doesnât always mean far-off destinations. Exploring local parks or nearby towns can be just as refreshing. Micro-adventures, like a sunrise hike or a picnic, are budget-friendly and rejuvenating. Packing light and choosing eco-conscious accommodations align with sustainable living trends. Platforms like Airbnb offer unique stays that enhance the experience.
+    </p>
+    <p>
+      Fitness doesnât require a gym membership. Bodyweight exercises, like push-ups or yoga flows, can be done at home. Online platforms like YouTube offer free workouts for all levels. Consistency matters more than intensityâaim for 20 minutes a day to build a habit. Pairing exercise with outdoor activities, like cycling or jogging, boosts both physical and mental health.
+    </p>
+    <p class="box">
+      Small changes lead to big results. Try a 5-minute meditation, swap one meal for a plant-based option, or plan a local adventure this weekend. These steps create a lifestyle that feels authentic and sustainable.
+    </p>
+    <h2>Curating Your Personal Style</h2>
+    <p>
+      Your style reflects your personality. Experiment with bold colors or classic neutrals to find what feels right. Thrift stores and second-hand platforms like Depop offer unique finds at affordable prices. Sustainable fashion is about making mindful choicesâopt for brands that prioritize ethical production and durable materials.
+    </p>
+    <p>
+      Accessories are a game-changer. A quality watch, a handmade necklace, or a versatile tote can elevate any outfit. Focus on pieces that tell a story or hold sentimental value. Mixing high-end and budget items creates a balanced wardrobe thatâs both practical and expressive. Follow fashion influencers on platforms like Instagram for inspiration, but always adapt trends to suit your taste.
+    </p>
+    <p>
+      Wellness and style go hand in hand. Feeling good in your skin enhances confidence, which shines through in how you carry yourself. Skincare routines, like using natural products or SPF daily, complement a healthy lifestyle. Brands like The Ordinary offer affordable, science-backed options for all skin types.
+    </p>
+    <p>
+      Ultimately, a balanced lifestyle is about aligning your choices with your values. Whether itâs eating healthier, traveling sustainably, or dressing authentically, small steps lead to lasting change. Start where you are, and let your journey unfold naturally.
+    </p>
+    Báº£n lÃ m láº¡i bá»i <a href="https://www.facebook.com/">T apple</a>
+  </article>
 
-    <!-- Phần Kỹ Năng -->
-    <section class="activities-showcase py-5 bg-light">
-        <div class="container">
-            <div class="section-header text-center mb-5">
-                <span class="section-subtitle">Điểm Mạnh</span>
-                <h2 class="section-title">Kỹ Năng Của Tôi</h2>
-                <p class="section-description">Những kỹ năng tôi đã rèn luyện để phát triển trong lập trình và giao dịch</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="activity-category">
-                        <div class="activity-icon">
-                            <i class="bi bi-code"></i>
-                        </div>
-                        <h4>Lập Trình</h4>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="activity-category">
-                        <div class="activity-icon">
-                            <i class="bi bi-bar-chart-line"></i>
-                        </div>
-                        <h4>Phân Tích Kỹ Thuật</h4>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="activity-category">
-                        <div class="activity-icon">
-                            <i class="bi bi-clock"></i>
-                        </div>
-                        <h4>Quản Lý Thời Gian</h4>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="activity-category">
-                        <div class="activity-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <h4>Quản Lý Rủi Ro</h4>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="activity-category">
-                        <div class="activity-icon">
-                            <i class="bi bi-chat-dots"></i>
-                        </div>
-                        <h4>Giao Tiếp</h4>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="activity-category">
-                        <div class="activity-icon">
-                            <i class="bi bi-lightbulb"></i>
-                        </div>
-                        <h4>Giải Quyết Vấn Đề</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <script>
+    const switcher = document.querySelector('.switcher');
+    const volumeControl = document.querySelector('.volume-control');
+    const volumeSlider = document.querySelector('.volume-control__slider');
+    const volumeInput = document.querySelector('.volume-control__input');
+    const audio = document.getElementById('background-audio');
 
-    <!-- Phần Giao Dịch -->
-    <section id="trading" class="py-5">
-        <div class="container">
-            <div class="section-header text-center mb-5">
-                <span class="section-subtitle">Hoạt Động Đầu Tư</span>
-                <h2 class="section-title">Hành Trình Giao Dịch</h2>
-                <p class="section-description">Khám phá chiến lược giao dịch và các lĩnh vực tôi đang tham gia</p>
-            </div>
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="planner-form">
-                        <form id="trading-form">
-                            <div class="mb-4">
-                                <label for="investment" class="form-label">Ngân Sách Đầu Tư (VND)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
-                                    <input type="number" class="form-control form-control-lg" id="investment" min="1000000" required placeholder="Nhập ngân sách đầu tư">
-                                </div>
-                                <div class="form-text">Tôi sẽ gợi ý chiến lược phù hợp với ngân sách của bạn</div>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Loại Hình Giao Dịch</label>
-                                <div class="activity-options">
-                                    <div class="activity-option">
-                                        <input class="form-check-input" type="checkbox" value="stocks" id="stocks">
-                                        <label class="form-check-label" for="stocks">
-                                            <i class="bi bi-graph-up"></i>
-                                            <span>Cổ Phiếu</span>
-                                        </label>
-                                    </div>
-                                    <div class="activity-option">
-                                        <input class="form-check-input" type="checkbox" value="crypto" id="crypto">
-                                        <label class="form-check-label" for="crypto">
-                                            <i class="bi bi-currency-bitcoin"></i>
-                                            <span>Tiền Điện Tử</span>
-                                        </label>
-                                    </div>
-                                    <div class="activity-option">
-                                        <input class="form-check-input" type="checkbox" value="forex" id="forex">
-                                        <label class="form-check-label" for="forex">
-                                            <i class="bi bi-currency-exchange"></i>
-                                            <span>Forex</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Phong Cách Giao Dịch</label>
-                                <div class="date-type-options">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="tradingStyle" id="tradingStyleShort" value="short-term" checked>
-                                        <label class="form-check-label" for="tradingStyleShort">Ngắn Hạn</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="tradingStyle" id="tradingStyleLong" value="long-term">
-                                        <label class="form-check-label" for="tradingStyleLong">Dài Hạn</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="tradingStyle" id="tradingStyleSwing" value="swing">
-                                        <label class="form-check-label" for="tradingStyleSwing">Swing Trading</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                <i class="bi bi-magic"></i> Gợi Ý Chiến Lược
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-7">
-                    <div id="results" class="d-none">
-                        <div class="results-header">
-                            <h3>Chiến Lược Giao Dịch Cá Nhân Hóa</h3>
-                            <p class="text-muted">Dựa trên sở thích của bạn, tôi đã tạo ra các chiến lược giao dịch phù hợp</p>
-                        </div>
-                        <div id="trading-suggestions" class="trading-suggestions">
-                            <!-- Gợi ý giao dịch sẽ được chèn ở đây -->
-                        </div>
-                    </div>
-                    <div id="initial-state" class="text-center py-5">
-                        <img src="./IMG_4376.png" alt="Hình minh họa giao dịch" class="img-fluid mb-4 initial-image">
-                        <h4>Sẵn sàng khám phá chiến lược giao dịch?</h4>
-                        <p class="text-muted">Điền vào biểu mẫu để nhận gợi ý cá nhân hóa dựa trên sở thích của bạn.</p>
-                        <div class="features-list">
-                            <div class="feature-item">
-                                <i class="bi bi-lightning-charge-fill"></i>
-                                <span>Gợi Ý Nhanh Chóng</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="bi bi-geo-alt-fill"></i>
-                                <span>Phù Hợp Thị Trường</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="bi bi-graph-up"></i>
-                                <span>Tối Ưu Lợi Nhuận</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    const trackPrevious = (el) => {
+      const radios = el.querySelectorAll('input[type="radio"]');
+      let previousValue = null;
 
-    <!-- Phần Câu Chuyện Thành Công -->
-    <section id="testimonials" class="py-5 bg-light">
-        <div class="container">
-            <div class="section-header text-center mb-5">
-                <span class="section-subtitle">Thành Tích</span>
-                <h2 class="section-title">Những Thành Công Của Tôi</h2>
-                <p class="section-description">Một số dự án và giao dịch nổi bật mà tôi đã đạt được</p>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <p class="testimonial-text">"Tôi đã phát triển một ứng dụng chat thời gian thực sử dụng Firebase, mang lại trải nghiệm mượt mà cho người dùng."</p>
-                        <div class="testimonial-user">
-                            <img src="https://i.ibb.co/DP6MZJVH/tuan-profile.png" alt="Tuấn" class="testimonial-avatar">
-                            <div>
-                                <h5 class="testimonial-name">Tuấn - Dự Án Chat</h5>
-                                <p class="testimonial-location">Hà Nội, Việt Nam</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <p class="testimonial-text">"Nhờ phân tích kỹ thuật, tôi đã đạt lợi nhuận 20% từ giao dịch Bitcoin trong 3 tháng."</p>
-                        <div class="testimonial-user">
-                            <img src="https://i.ibb.co/DP6MZJVH/tuan-profile.png" alt="Tuấn" class="testimonial-avatar">
-                            <div>
-                                <h5 class="testimonial-name">Tuấn - Giao Dịch Crypto</h5>
-                                <p class="testimonial-location">Hà Nội, Việt Nam</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </div>
-                        <p class="testimonial-text">"Tôi đã xây dựng một giao diện web giống YouTube với tính năng kéo-thả sticker, nhận được nhiều phản hồi tích cực."</p>
-                        <div class="testimonial-user">
-                            <img src="https://i.ibb.co/DP6MZJVH/tuan-profile.png" alt="Tuấn" class="testimonial-avatar">
-                            <div>
-                                <h5 class="testimonial-name">Tuấn - Dự Án Web</h5>
-                                <p class="testimonial-location">Hà Nội, Việt Nam</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      const initiallyChecked = el.querySelector('input[type="radio"]:checked');
+      if (initiallyChecked) {
+        previousValue = initiallyChecked.getAttribute("c-option");
+        el.setAttribute('c-previous', previousValue);
+      }
 
-    <!-- Phần Câu Hỏi Thường Gặp -->
-    <section id="contact" class="py-5">
-        <div class="container">
-            <div class="section-header text-center mb-5">
-                <span class="section-subtitle">Liên Hệ Với Tôi</span>
-                <h2 class="section-title">Câu Hỏi Thường Gặp</h2>
-                <p class="section-description">Tìm hiểu thêm về tôi và cách liên hệ để hợp tác hoặc trao đổi</p>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                    Làm thế nào để liên hệ với bạn?
-                                </button>
-                            </h2>
-                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Bạn có thể liên hệ với tôi qua email hoặc các nền tảng mạng xã hội được liệt kê ở phần chân trang. Tôi luôn sẵn sàng trao đổi về lập trình hoặc giao dịch!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    Bạn có nhận làm dự án lập trình tự do không?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Có, tôi nhận làm các dự án lập trình tự do, đặc biệt là các dự án web sử dụng HTML, CSS, JavaScript và Firebase. Hãy liên hệ để thảo luận chi tiết!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    Bạn sử dụng chiến lược giao dịch nào?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Tôi chủ yếu sử dụng phân tích kỹ thuật, kết hợp các chỉ báo như RSI, MACD và đường trung bình động. Tôi cũng áp dụng quản lý rủi ro nghiêm ngặt.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                                    Bạn có chia sẻ mẹo lập trình hoặc giao dịch không?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Chắc chắn rồi! Tôi thường chia sẻ các mẹo và kinh nghiệm trên các nền tảng mạng xã hội hoặc qua email. Hãy theo dõi để cập nhật!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          if (radio.checked) {
+            el.setAttribute('c-previous', previousValue ?? '');
+            previousValue = radio.getAttribute("c-option");
+            document.body.setAttribute('data-theme', radio.value);
+            localStorage.setItem('theme', radio.value);
+          }
+        });
+      });
+    }
 
-    <!-- Phần Kêu Gọi Hành Động -->
-    <section class="cta-section py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8 mb-4 mb-lg-0">
-                    <h2 class="cta-title">Sẵn Sàng Hợp Tác Với Tôi?</h2>
-                    <p class="cta-text">Hãy liên hệ để cùng nhau tạo ra những dự án tuyệt vời hoặc chia sẻ về giao dịch tài chính!</p>
-                </div>
-                <div class="col-lg-4 text-lg-end">
-                    <a href="#contact" class="btn btn-light btn-lg">Liên Hệ Ngay</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    trackPrevious(switcher);
 
-    <!-- Chân Trang -->
-    <footer class="footer py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="footer-title">Tuấn<span class="text-accent">Dev</span></h5>
-                    <p class="footer-description">Một học sinh 19 tuổi đam mê lập trình và giao dịch tài chính, luôn tìm kiếm cơ hội để học hỏi và phát triển.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-heading">Liên Kết Nhanh</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">Trang Chủ</a></li>
-                        <li><a href="#about">Về Tôi</a></li>
-                        <li><a href="#skills">Kỹ Năng</a></li>
-                        <li><a href="#trading">Giao Dịch</a></li>
-                        <li><a href="#contact">Liên Hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-heading">Lĩnh Vực</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">Lập Trình Web</a></li>
-                        <li><a href="#">Giao Dịch Cổ Phiếu</a></li>
-                        <li><a href="#">Giao Dịch Crypto</a></li>
-                        <li><a href="#">Phân Tích Kỹ Thuật</a></li>
-                        <li><a href="#">Quản Lý Rủi Ro</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <h5 class="footer-heading">Bản Tin</h5>
-                    <p>Đăng ký để nhận mẹo lập trình và giao dịch từ tôi.</p>
-                    <form class="newsletter-form">
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Địa chỉ email của bạn" required>
-                            <button class="btn btn-primary" type="submit">Đăng Ký</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <hr class="footer-divider">
-            <div class="footer-bottom">
-                <p class="copyright">© 2025 Tuấn Dev. Bản quyền thuộc về Tuấn.</p>
-                <div class="footer-bottom-links">
-                    <a href="#">Chính Sách Bảo Mật</a>
-                    <a href="#">Điều Khoản Dịch Vụ</a>
-                    <a href="#">Liên Hệ</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.body.setAttribute('data-theme', savedTheme);
+      const savedInput = document.querySelector(`.switcher__input[value="${savedTheme}"]`);
+      if (savedInput) savedInput.checked = true;
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    volumeControl.addEventListener('click', () => {
+      volumeControl.classList.toggle('volume-control--open');
+    });
+
+    volumeInput.addEventListener('input', () => {
+      const volume = volumeInput.value / 100;
+      audio.volume = volume;
+      localStorage.setItem('volume', volume);
+    });
+
+    const savedVolume = localStorage.getItem('volume');
+    if (savedVolume) {
+      volumeInput.value = savedVolume * 100;
+      audio.volume = savedVolume;
+    }
+  </script>
 </body>
-</html>
